@@ -16,11 +16,11 @@
 
 前端页面
 
-![](E:\下载\图片\下载页面主页.png)
+![下载页面主页.png](https://free.tc.mofashi.ltd/2/2024/02/11/65c89c4dbd256.png)
 
 后台页面
 
-![](E:\下载\图片\下载页面后台.png)
+![下载页面后台.png](https://free.tc.mofashi.ltd/2/2024/02/11/65c89c4eb43e8.png)
 
 ##### 使用须知
 
