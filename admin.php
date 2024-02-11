@@ -14,28 +14,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
     $newUsername = $_POST['username'];
     $newPassword = $_POST['password'];
 
-    $sql = "UPDATE users SET username='$newUsername', password='$newPassword'";
-    if (mysqli_query($conn, $sql)) {
+    // 使用预处理语句来执行 SQL 查询，确保安全
+    $stmt = $conn->prepare("UPDATE users SET username=?, password=?");
+    $stmt->bind_param("ss", $newUsername, $newPassword);
+    if ($stmt->execute()) {
         echo "<script>alert('用户名和密码修改成功');</script>";
     } else {
         echo "<script>alert('用户名和密码修改失败');</script>";
     }
+    $stmt->close();
 }
 
 // 删除文件
 if (isset($_GET['delete']) && is_numeric($_GET['delete'])) {
     $fileId = $_GET['delete'];
-    $sql = "DELETE FROM files WHERE id = $fileId";
-    if (mysqli_query($conn, $sql)) {
+
+    // 使用预处理语句来执行 SQL 查询，确保安全
+    $stmt = $conn->prepare("DELETE FROM files WHERE id = ?");
+    $stmt->bind_param("i", $fileId);
+    if ($stmt->execute()) {
         echo "<script>alert('文件删除成功');</script>";
     } else {
         echo "<script>alert('文件删除失败');</script>";
     }
+    $stmt->close();
 }
 
 // 读取数据库中的文件记录
 $sql = "SELECT * FROM files";
-$result = mysqli_query($conn, $sql);
+$result = $conn->query($sql);
 ?>
 
 <!DOCTYPE html>
@@ -80,7 +87,7 @@ $result = mysqli_query($conn, $sql);
             <tbody>
                 <?php
                 // 输出文件记录到表格中
-                while ($row = mysqli_fetch_assoc($result)) {
+                while ($row = $result->fetch_assoc()) {
                     echo "<tr>";
                     echo "<td>{$row['id']}</td>";
                     echo "<td>{$row['filename']}</td>";
